@@ -855,50 +855,17 @@ class ViewController: UIViewController, UITextFieldDelegate, WKUIDelegate, WKNav
   func resetSession() {
     timer?.invalidate()
     
-    guard let webView = webView else { return }
-    
-    print("Resetting session...")
+    print("Resetting session and returning to home page...")
     // Remove all additional webViews first
     for additionalWebView in additionalWebViews {
       additionalWebView.stopLoading()
       additionalWebView.removeFromSuperview()
     }
     additionalWebViews.removeAll()
-    
-    // Clear sessionStorage, localStorage, and cookies using JavaScript
-    let javascript = """
-    if (typeof sessionStorage !== 'undefined') {
-        sessionStorage.clear();
-    }
-    if (typeof localStorage !== 'undefined') {
-        localStorage.clear();
-    }
-    if (typeof document.cookie !== 'undefined') {
-        document.cookie.split(";").forEach(function(c) {
-            document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-        });
-    }
-    """
-    
-    webView.evaluateJavaScript(javascript) { (_, error) in
-      if let error = error {
-        print("JavaScript execution error: \(error)")
-      }
-      
-      // Clear WKWebView website data store (this is crucial for Microsoft login)
-      let websiteDataTypes = WKWebsiteDataStore.allWebsiteDataTypes()
-      let dataStore = webView.configuration.websiteDataStore
-      
-      dataStore.removeData(ofTypes: websiteDataTypes, modifiedSince: Date(timeIntervalSince1970: 0)) {
-        print("Website data cleared")
-        
-        // Load home URL after clearing data
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-          self.config.newURL = self.config.homeURL
-          self.loadWebViewIfNeeded()
-        }
-      }
-    }
+
+    // Load home URL without clearing browsing data
+    config.newURL = config.homeURL
+    loadWebViewIfNeeded()
   }
   
   // version 2.4 - deep link support
