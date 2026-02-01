@@ -41,7 +41,7 @@ URL key: URL to display in app or default home page when BROWSER_MODE is enabled
 
 **PRIVATE_BROWSING** key: Set to “ON” to enable private browsing mode. While in private browsing mode, the app stores web browsing data in non-persistent local data store similar to Safari using Private Browsing mode.
 
-**RESET_TIMER** key: Set integer value (in seconds) to set an automatic timer to clear browser data and return to default home page. Timer will not activate if already at homepage. Timer is disable by default or disabled with value of 0. (New in version 2.2)
+**RESET_TIMER** key: Set integer value (in seconds) to set an automatic timer to return to the default home page. Timer will not activate if already at homepage. Timer is disable by default or disabled with value of 0. (New in version 2.2)
 
 **QUERY_URL_STRING**  Advanced option used with REMOTE_LOCK to support automatically unlocking app when a specific URL is presented. Set value to string contained in URL to be unlocked. Supports completed surveys/forms. (new in version 2.3)
 
